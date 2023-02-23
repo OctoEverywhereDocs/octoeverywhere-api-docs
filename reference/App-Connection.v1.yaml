@@ -1,0 +1,147 @@
+openapi: 3.0.0
+info:
+  title: App Connection Portal
+  version: '1.0'
+  description: 'For an overview and details on the app connection portal, see the [App Connection Overview page](../docs/App-Connection-Overview.md).'
+servers:
+  - url: 'https://octoeverywhere.com'
+paths:
+  /appportal/v1:
+    parameters: []
+    get:
+      summary: Start An App Portal
+      tags: []
+      operationId: get-users-userId
+      description: |-
+        This is the page your app will navigate to to start the App Connection portal process.
+
+        #### **appId**
+        The App ID is a string that's assigned to your app by OctoEverywhere. This is used to track which App Connections are created by which apps, and also used to add your app name to the UI. Please contact Quinn if you need an App ID assigned. 
+
+        #### **authType**
+        The authentication type determines what type of auth will be required for this app connection. Authentication types are discussed on the [App Connection Overview](../docs/App-Connection-Overview.md) page.
+
+        **7/5/2021 Update** - Due to the remote nature of apps and to ensure all OctoEverywhere users have a secure connection to their printers, we now require either basic http auth or bearer tokens. This header isn't required since the value will always be set to `enhanced`
+
+        ### **If octoPrintApiKeyAppName*** - optional
+
+        This key allows OctoEverywhere to generate an OctoPrint API key on behalf of your app! [For all the details, see this page](../docs/App-Connection-zOctoPrint-Auto-API-Key.md).
+
+        #### **printerId** - optional
+
+        If specified, this is the OctoEverywhere Printer ID the user is trying to connect to.
+
+        A Printer ID is a unique printer identifier for every printer connected to OctoEverywhere. If specified, the portal UI will select the printer specified by default. If the printer isn't accocated to the user's account, the portal will start a flow to do so.
+
+        If your app has local access to the printer already, you can query the Printer ID from the OctoEverywhere OctoPrint plugin. Simply make a GET request to `http://<local OctoPrint IP>/api/plugin/octoeverywhere` and parse the resulting JSON.
+
+        #### **returnUrl** - optional
+
+        If specified, the URL-encoded return URL will overwrite the default return URL. The return url is the page the portal will navigate to when either the process completed or ended in an error. The returned GET parameters will be appended on the end of the URL.
+
+        #### **appLogoUrl** - optional
+
+        If specified, this app logo image will be shown in the UI. The image URL must be URL encoded. The image will be displayed in a 100x100px square. Logos with circular solid backgrounds and transparent corners look best.
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: appId
+          description: The OctoEverywhere assigned id for your app.
+          required: true
+        - schema:
+            type: string
+            default: 'http://octoeverywhere.com/appportal/v1/complete'
+          in: query
+          name: returnUrl
+          description: 'If specified, this is the final URL the system will navigate to on completion or failure; with all of the resulting GET parameters.'
+        - schema:
+            type: string
+          in: query
+          name: printerId
+          description: 'If specified, this is the user''s OctoEverywhere Printer ID they are trying to connect to.'
+        - schema:
+            type: string
+          in: query
+          name: appLogoUrl
+          description: 'If specified, this is a URL to the app''s logo. The URL must be URL encoded.'
+        - schema:
+            type: string
+          in: query
+          name: octoPrintApiKeyAppName
+          description: 'If specified, this is the URL encoded App Name that will show up in the OctoPrint settings. If this key is present, it indicates the OctoPrint API Key should be generated.'
+      responses:
+        '200':
+          description: The App Connection portal has started successfully.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+  /appportal/v1/complete:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses: {}
+      operationId: get-appportal-v1-complete
+      description: |-
+        Unless otherwiwse specified, this is the URL that the portal will navigate to when the process is completed or has failed. If your app specifies a different return URL, these same GET parameters will be called on specified return URL.
+
+        Note that the `appApiToken`, `octoPrintApiKey`, and `auth*` parameters will only be given to your app once and aren't queryable again via the OctoEverywhere APIs. If they are lost, you must create a new App Connection.
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: success
+          description: Indicates if the App Connection was successful or not.
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: id
+          description: The new App Connection's ID
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: url
+          description: The new App Connections root URL
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: 'appApiToken '
+          description: The API token your app can use to access the OctoEverywhere APIs for this App Connection.
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: authBasicHttpUser
+          description: The generated http basic auth user name.
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: 'authBasicHttpPassword '
+          description: The generated http basic auth password.
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: 'authBearerToken '
+          description: The generated bearer token.
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: octoPrintApiKey
+          description: 'Optional - If OctoPrint API key generation was requested and was successful, this is the API Key.'
+components:
+  schemas: {}
+  securitySchemes:
+    AppToken:
+      name: API Key
+      type: apiKey
+      in: header
+  examples: {}

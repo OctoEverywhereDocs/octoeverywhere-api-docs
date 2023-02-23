@@ -1,0 +1,295 @@
+openapi: 3.0.0
+info:
+  title: App Connection API
+  version: '1.0'
+servers:
+  - url: 'https://octoeverywhere.com'
+paths:
+  /api/appconnection/info:
+    parameters: []
+    get:
+      summary: App Connection OctoEverywhere API
+      tags: []
+      responses:
+        '200':
+          description: The App Connection is valid and the current information has been returned.
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Get User Alice Smith:
+                  value:
+                    id: 142
+                    firstName: Alice
+                    lastName: Smith
+                    email: alice.smith@gmail.com
+                    dateOfBirth: '1997-10-31'
+                    emailVerified: true
+                    signUpDate: '2019-08-24'
+        '400':
+          description: No App Token was found in the body or header.
+        '600':
+          description: Temporary Issue - Server Error / Unknown Error
+        '601':
+          description: Temporary Issue - Printer is Not Connected To OctoEverywhere
+        '602':
+          description: Temporary - OctoEverywhere's Connection to OctoPrint Timed Out.
+        '603':
+          description: Permanent Issue - App Connection Not Found For The Given AppToken
+        '604':
+          description: Permanent - App Connection Revoked/Expired
+        '605':
+          description: Temporary - App Connection Owner's Account Is No Longer A Supporter.
+      operationId: get-users-userId
+      description: |-
+        To get information about an App Connection, you must set the `AppToken` header with the API Token returned from the App Connection Portal.
+
+        To figure out the App Connection and printer's state, you can use a combination of the API return type as well as the `IsOnline` flag in the resposne body. 
+
+        **Note! There are some HTTP status codes in the 6xx range!** These are custom OctoEverywhere HTTP status codes that are used for the App Connection relay system. We share the same custom status codes here to keep things consistent. 
+        [For details on the custom status codes, see this page.](../docs/App-Connection-Usage.md)
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: AppToken
+          description: The App Connection API Token
+          required: true
+  /api/live/createfromappconnection:
+    parameters: []
+    post:
+      summary: Create Live Link For App Connections
+      operationId: post-api-live-createfromappconnection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    LiveId: The Live ID
+                    Url: 'https://octoeverywhere.com/live/<id>'
+                    ShortUrl: 'https://oe.ink/l/<id>'
+                properties:
+                  LiveId:
+                    type: string
+                    minLength: 1
+                    description: 'The Live Link ID - This is a random [A-Z, a-z, 0-9] string. The length is subject to change over time.'
+                  Url:
+                    type: string
+                    minLength: 1
+                    description: This is the full URL the user can share to share the Live Link
+                    format: uri
+                    example: 'https://octoeverywhere.com/live/<id>'
+                  ShortUrl:
+                    type: string
+                    minLength: 1
+                    description: This is a shorter URL that will redirect to the full URL.
+                    format: uri
+                    example: 'https://oe.ink/l/<id>'
+                required:
+                  - LiveId
+                  - Url
+                  - ShortUrl
+        '400':
+          description: Bad Request - There was something wrong with the input parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '500':
+          description: 'Internal Server Error - Something bad happened, you can''t fix it.'
+        '603':
+          description: App Connection Not Found - This App API Token will never be valid again.
+        '604':
+          description: App Connection Expired or Revoked - This App API Token will never be valid again.
+      description: |-
+        Used to create a Live Link for the printer associated to the App API Token, the token returned from the App Portal process.
+
+        This simple API must be called with the App API Token and will return a new Live Link ID for the printer the App API Token is referencing. The only parameter (which is optional) is when the Live Link will expire, expressed in hours. This defaults to 24 hours if not specified.
+
+        Currently there's no way to pass Live Link options like the title, model URL, or filament URL. But if you would like these things please ask Quinn! 
+
+        **Note! There are some HTTP status codes in the 6xx range!** These are custom OctoEverywhere HTTP status codes that are used for the App Connection relay system. We share the same custom status codes here to keep things consistent. 
+        [For details on the custom status codes, see this page.](../docs/App-Connection-Usage.md)
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: AppToken
+          description: The App API Token must be passed EITHER as a header or in the POST body.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              x-examples:
+                example-1:
+                  AppToken: <The App API Token for this printer
+                  ExpirationHours: 1
+              properties:
+                AppToken:
+                  type: string
+                  minLength: 1
+                  description: The App API Token must be passed either as a header or in the POST body.
+                ExpirationHours:
+                  type: number
+                  minimum: 1
+                  maximum: 120
+                  description: Optional - If set this is the number of hours until the Live Link expires. Defaults to 24 horus.
+                  default: 24
+        description: ''
+  /api/gadget/GetStatusFromAppConnection:
+    parameters: []
+    post:
+      summary: Get Gadget's Status For App Connections
+      operationId: post-api-gadget-getstatusfromappconnection
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    LiveId: The Live ID
+                    Url: 'https://octoeverywhere.com/live/<id>'
+                    ShortUrl: 'https://oe.ink/l/<id>'
+                properties:
+                  Status:
+                    type: string
+                    description: Gadget's current status as text for the active print. Expected to be less than 4 words.
+                  StatusColor:
+                    type: string
+                    minLength: 1
+                    description: 'Indicates the status color. Must be one of [''g'',''y'',''r'',''w'']. Green is good, Yellow is poor, Red is bad, White is neutral.'
+                    maxLength: 1
+                  Rating:
+                    type: integer
+                    description: Gadget's current rating. Must be between 1 and 10 (inclusive). See the comment in the description for details.
+                    minimum: 1
+                    maximum: 10
+                  State:
+                    type: integer
+                    description: 'Gadge''t state enum: 0 = Disabled, 1 = DisabledForCurrentPrint, 2 = Idle, 3 = Active, 4 = PausedDueToFailure'
+                    format: uri
+                    minimum: 0
+                    maximum: 4
+                required:
+                  - Status
+                  - StatusColor
+                  - Rating
+                  - State
+        '400':
+          description: Bad Request - There was something wrong with the required post params.
+        '500':
+          description: 'Internal Server Error - Something bad happened, you can''t fix it.'
+        '601':
+          description: Temporary Error - PrinterOffline - The printer isn't connected to OctoEveywhere.
+        '602':
+          description: Temporary Error - PrinterConnectionTimeOut - The connection to the printer failed.
+        '603':
+          description: App Connection Not Found - This App API Token will never be valid again.
+        '604':
+          description: App Connection Expired or Revoked - This App API Token will never be valid again.
+        '610':
+          description: PluginUpdateRequired - The user must update their OctoEverywhere plugin to use Gadget.
+        '611':
+          description: 'NoBetaAccess - This error means the user currently doesn''t have '
+      description: |-
+        Returns the current state of [Gadget, OctoEverywhere's AI Failure Detection Assistant](https://octoeverywhere.com/Gadget)!
+
+        Gadget is free and enabled by default for the entire OctoEverywhere community, so it's available on all OctoPrint instances running OctoEverywhere. Adding Gadget to your app empowers your users with state-of-the-art AI failure detection, for free, directly in your app!
+
+        .
+
+
+        **Important Usage Details**
+
+        Gadget's actual inspection rate is dynamically based on the current server load. This API is designed to be polled on a fixed interval to get the latest status while printing. Please be mind full about polling; it's ok to pre-fetch information so it can be shown to the user when needed, but please don't poll the API frequently if the information isn't actively displayed to the user.
+
+        Usage Recommendations:
+        - If the user can see the status and the printer is printing. **Poll every 10 seconds, which is the max rate at which the API allows polling per App Connection.**
+        - If the user can't see the status and the printer is printing, pause polling or significantly reduce the rate until the user can see the status again.
+        - If the printer isn't printing, don't poll the API because nothing will change. The results of the API will only change while the printer is printing.
+        - If Gadget is Disabled for the account, it's ok to poll infrequently to see if the status changes.
+        - If Gadget is Disabled For Current Print, there's no need to pull until a new print starts.
+
+        .
+
+
+        **Gadget State**
+
+        If the API returns 200, Gadget will be in one of 5 states.
+
+        - Disabled - Gadget is disabled on the user's account for all printers.
+        - DisabledForCurrentPrint - Gadget has been disabled for this printer **only for the rest of this print**.
+        - Idle - Gadget is not currently monitoring a print.
+        - Active - Gadget is currently monitoring the active print.
+        - PausedDueToFailure - The print is currently paused because Gadget detected a failure.
+
+        The ***status*** of Gadget is only returned if the state is Active, otherwise, there's nothing to return.
+
+        .
+
+        **Gadget Status**
+
+        Gadget's status indicates how Gadget feels about the current print. The status is abstracted in this API, so as 
+        Gadget continues to change and grow, we can update concepts in the backend and map them to this common API. Overtime new fields might be added to this API, but old fields will never be removed or changed.
+
+        In the spirit of keeping your app current with the changing Gadget service, it's suggested you use the text returned as `Status` if possible. This text will always be short (~4 words or less) and will be updated as Gadget evolves. The text can optionally be colored with the color indicated with `StatusColor`. The advantage of using this Status is if new states or print failure detection capabilities are added, the string will automatically update to reflect the new system.
+
+        Finally, a `Rating` is returned, which can be used by your app to provide custom text, color status indicators, or anything else. This rating will always be between `1-10` (inclusive). The values can be interpreted as follows:
+
+        - 1 - There's a print failure
+        - 2 - There's probably a print failure.
+        - 3 - There might be a print failure.
+        - 4-5 - Monitoring possible print failure.
+        - 6-9 - The print is looking good.
+        - 10 - The print looks perfect.
+
+        .
+
+        **User Links**
+
+        If the user of your app needs more information on Gadget or wants to change any settings, link them to `https://octoeverywhere.com/gadget`.
+
+        If the user wants to get the full Gadget status direclty from OctoEverywhere, link them to the Quick View link for the printer, which is `https://octoeverywhere.com/view/<printer name>`. The printer name is given to the App Connection on the creation and can also be gotten from the [/api/appconnection/info](5b0f8eae68257-app-connection-octo-everywhere-api) get call.
+
+        .
+
+
+        **Http Status Code Note - There are some HTTP status codes in the 6xx range!** These are custom OctoEverywhere HTTP status codes that are used for the App Connection relay system. We share the same custom status codes here to keep things consistent. 
+        [For details on the custom status codes, see this page.](../docs/App-Connection-Usage.md)
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: AppToken
+          description: The App API Token must be passed EITHER as a header or in the POST body.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              x-examples:
+                example-1:
+                  AppToken: <The App API Token for this printer
+                  ExpirationHours: 1
+              properties:
+                AppToken:
+                  type: string
+                  minLength: 1
+                  description: The App API Token must be passed either as a header or in the POST body.
+        description: ''
+components:
+  schemas: {}
