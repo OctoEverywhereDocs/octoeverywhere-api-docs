@@ -71,6 +71,8 @@ The following defines the EventType enum. *Remember that as event types are adde
 13. NonSupporterNotificationLimit
     - Fired when the user's account hits the daily notification limit.
     - Standard accounts are limited to 3 webhook notifications a day; all supporter roles get unlimited notifications.  [Learn More](https://octoeverywhere.com/supporter?source=web_hook_dev_doc)
+14. ThirdLayerComplete
+    - Just like FirstLayerComplete, but this fires on the third layer. Some users might find it more useful to check their print after the first few layers are done, or both! It's up to you!
 
 
 
