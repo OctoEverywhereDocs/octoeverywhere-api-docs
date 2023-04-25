@@ -53,3 +53,9 @@ OctoEverywhere needs to express connection errors, but it can't use HTTP status 
   - *Permanent* - The HTTP **request** body was exceeded the max size for this user's account. The per file limit for this user can be found using the [App Connection Info Api](App-OctoEverywhere-API.md)
 - **609** - **Webcam Back to Back Limit Exceeded**
   - *Temporary* - The user has viewed the webcam too many times per a time window. This time limits can be found in the App OctoEverywhere API.
+- **610** - **Plugin Update Required**
+  - *(uncommon) Temporary* - The user must update their plugin for this API to work. 
+- **611** - **No Beta Access**
+  - *(uncommon) Temporary* - This API requires beta access that the user doesn't have.
+- **612**
+  - *(uncommon) Temporary* - There was an error in the plugin that prevented this service call from being successful. Usually caused the a plugin bug, this isn't expected to happen often. If a user hits this constantly, they should contact OctoEverywhere support.
