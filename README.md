@@ -1,5 +1,4 @@
-# OctoEverywhere Api Docs
+# [OctoEverywhere](https://octoeverywhere.com) Api Documentation
 
-A Place For OctoEverywhere.com API Docs. 
-
-See https://octoeverywhere.stoplight.io/!
+This repo holds the docs that are displayed on Spotlight.io. For a pretty and formatted view, visit:
+https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/a3a745c6f38a0-app-connection-overview
