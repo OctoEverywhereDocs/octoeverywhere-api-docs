@@ -59,3 +59,5 @@ OctoEverywhere needs to express connection errors, but it can't use HTTP status 
   - *(uncommon) Temporary* - This API requires beta access that the user doesn't have.
 - **612**
   - *(uncommon) Temporary* - There was an error in the plugin that prevented this service call from being successful. Usually caused the a plugin bug, this isn't expected to happen often. If a user hits this constantly, they should contact OctoEverywhere support.
+- **613**
+  - *(uncommon) Temporary* - Currently only used by the [Live Links creation API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/632a7f5513f9c-create-live-link-for-app-connections) when the `EndWhenCurrentPrintIsComplete` flag is passed. The `EndWhenCurrentPrintIsComplete` requires that there be a print running on the printer, and thus this error code is returned if there is no print running. In the future, this error code could be used by other APIs, but the API doc for each API would show it.

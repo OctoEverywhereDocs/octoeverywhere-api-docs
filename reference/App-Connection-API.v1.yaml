@@ -62,8 +62,20 @@ paths:
       summary: Create Live Link For App Connections
       operationId: post-api-live-createfromappconnection
       responses:
-        '200':
-          description: OK
+        '400':
+          description: Bad Request - There was something wrong with the input parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '500':
+          description: 'Internal Server Error - Something bad happened, you can''t fix it.'
+        '603':
+          description: App Connection Not Found - This App API Token will never be valid again.
+        '604':
+          description: App Connection Expired or Revoked - This App API Token will never be valid again.
+        '613':
           content:
             application/json:
               schema:
@@ -95,23 +107,13 @@ paths:
                   - LiveId
                   - Url
                   - ShortUrl
-        '400':
-          description: Bad Request - There was something wrong with the input parameters.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
-        '500':
-          description: 'Internal Server Error - Something bad happened, you can''t fix it.'
-        '603':
-          description: App Connection Not Found - This App API Token will never be valid again.
-        '604':
-          description: App Connection Expired or Revoked - This App API Token will never be valid again.
+          description: 'NoPrintActive - This can only be returned if `EndWhenCurrentPrintIsComplete` is set, since `EndWhenCurrentPrintIsComplete` requires a print to be running on the printer to make the tracking Live Link.'
       description: |-
         Used to create a Live Link for the printer associated to the App API Token, the token returned from the App Portal process.
 
         This simple API must be called with the App API Token and will return a new Live Link ID for the printer the App API Token is referencing. The only parameter (which is optional) is when the Live Link will expire, expressed in hours. This defaults to 24 hours if not specified.
+
+        The new `EndWhenCurrentPrintIsComplete` allows the live link created to track the life cycle of the active print. When the print is complete, the live access to the printer is lost, and the live link becomes a static end cap showing the print results. This is a nice feature for users who want to share one print they are excited about, and it creates a nice and clean completion state of the print, acking like a bookend for any users who visit the link after the print is complete. If you want to play with our implication, this feature is available on the main [OctoEverywhere website](https://octoeverywhere.com/live).
 
         Currently there's no way to pass Live Link options like the title, model URL, or filament URL. But if you would like these things please ask Quinn! 
 
@@ -127,7 +129,6 @@ paths:
         content:
           application/json:
             schema:
-              description: ''
               type: object
               x-examples:
                 example-1:
@@ -141,9 +142,15 @@ paths:
                 ExpirationHours:
                   type: number
                   minimum: 1
-                  maximum: 120
+                  maximum: 17520
                   description: Optional - If set this is the number of hours until the Live Link expires. Defaults to 24 horus.
-                  default: 24
+                  default: 720
+                EndWhenCurrentPrintIsComplete:
+                  type: boolean
+                  x-stoplight:
+                    id: feqoufo8rlrfr
+                  default: false
+                  description: 'If set, the `ExpirationHours` is ingored and this live link tracks the current print.'
         description: ''
   /api/gadget/GetStatusFromAppConnection:
     parameters: []
