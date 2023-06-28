@@ -115,7 +115,7 @@ paths:
 
         The new `EndWhenCurrentPrintIsComplete` allows the live link created to track the life cycle of the active print. When the print is complete, the live access to the printer is lost, and the live link becomes a static end cap showing the print results. This is a nice feature for users who want to share one print they are excited about, and it creates a nice and clean completion state of the print, acking like a bookend for any users who visit the link after the print is complete. If you want to play with our implication, this feature is available on the main [OctoEverywhere website](https://octoeverywhere.com/live).
 
-        Currently there's no way to pass Live Link options like the title, model URL, or filament URL. But if you would like these things please ask Quinn! 
+        Currently there's no way to pass Live Link options like the title, model URL, or filament URL. But if you would like these things please ask Quinn!
 
         **Note! There are some HTTP status codes in the 6xx range!** These are custom OctoEverywhere HTTP status codes that are used for the App Connection relay system. We share the same custom status codes here to keep things consistent. 
         [For details on the custom status codes, see this page.](../docs/App-Connection-Usage.md)
