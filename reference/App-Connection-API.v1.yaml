@@ -17,6 +17,55 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  PrinterName:
+                    type: string
+                    x-stoplight:
+                      id: xf1d4ape6pjr2
+                    description: The name assigned to the printer in OctoEverywhere by the user.
+                  PrinterLocalIp:
+                    type: string
+                    x-stoplight:
+                      id: u4a45ht5gdgx8
+                    description: 'If known, this is the last known IP address of the printer on the user''s LAN network. This is useful for discovering a local printer after it''s been setup via OctoEverywhere.'
+                  IsOnline:
+                    type: boolean
+                    x-stoplight:
+                      id: ca3xu47jtpfr5
+                    description: Indicates if the pritner is connected to OE or not.
+                  LastDisconnectTimeUtc:
+                    type: string
+                    x-stoplight:
+                      id: y4avgdz2btnzv
+                    description: The last time the printer disconnected from OctoEverywhere
+                  LastConnectionTimeUtc:
+                    type: string
+                    x-stoplight:
+                      id: v94aouxd93hf3
+                    description: The last time the printer connected to OctoEverywhere
+                  UserFacingPrinterUrl:
+                    type: string
+                    x-stoplight:
+                      id: pnhh5o80lk13j
+                    description: "This is the URL the user would normally use for remote access. The user must be logged into the use the URL, but opening the URL will redirect the user if they aren't logged in.\r\n\r\nThis is useful if in your app you want to have a webview that opens to OctoPrint or Klipper. Since the `app-<key>.octoeverywhere.com` URL will only work with the correct auth header set, this is an eaiser way to do it."
+                  PrinterLimits:
+                    type: object
+                    x-stoplight:
+                      id: vhp26z6i6k7f0
+                    properties:
+                      MaxDownloadFileSizeBytes:
+                        type: integer
+                        x-stoplight:
+                          id: bpf838wu6uub5
+                        description: The user's max file size that can be downlaoded. This is depdendent on their Supporter level.
+                      MaxUploadFileSizeBytes:
+                        type: integer
+                        x-stoplight:
+                          id: 96kxfuvw7q5ko
+                      MaxSingleWebcamStreamLengthSeconds:
+                        type: integer
+                        x-stoplight:
+                          id: bia9rt53yclta
               examples:
                 Get User Alice Smith:
                   value:
