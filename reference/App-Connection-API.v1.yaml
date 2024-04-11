@@ -47,7 +47,7 @@ paths:
                     type: string
                     x-stoplight:
                       id: pnhh5o80lk13j
-                    description: "This is the URL the user would normally use for remote access. The user must be logged into the use the URL, but opening the URL will redirect the user if they aren't logged in.\r\n\r\nThis is useful if in your app you want to have a webview that opens to OctoPrint or Klipper. Since the `app-<key>.octoeverywhere.com` URL will only work with the correct auth header set, this is an eaiser way to do it."
+                    description: "This is the URL the user would normally use for remote access. The user must be logged into the use the URL, but opening the URL will redirect the user if they aren't logged in.\r\n\r\nThis is useful if you want to have a web view that opens to OctoPrint or Klipper in your app. Since the app-<key>.octoeverywhere.com URL will only work with the correct auth header set; this is an easier way to do it."
                   PrinterLimits:
                     type: object
                     x-stoplight:
