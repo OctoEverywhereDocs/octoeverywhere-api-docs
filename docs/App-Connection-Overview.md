@@ -59,7 +59,7 @@ If a user's account loses Supporter Perks, they will not have access to any App 
 
 When a user loses Supporter Perks, all App Connection API calls will return a [`605` HTTP status code, as denoted on the App Connections Usage page.](App-Connection-Usage.md)
 
-**If a `605` HTTP status code is returned, the app should link the user to the following URL which gives the user details on what's wrong and how they fix it.** Using this common page ensures if any of the App Connection supporter detials change in the future, they will be consistent. Ideally, OctoEverywhere would like to include App Connections as a free feature for all users in the future.
+**If a `605` HTTP status code is returned, the app should link the user to the following URL, giving the user details on what's wrong and how to fix it.** Using this common page ensures if any of the App Connection supporter details change in the future, they will be consistent. Ideally, OctoEverywhere would like to include App Connections as a free feature for all users in the future.
 
 https://octoeverywhere.com/appportal/v1/nosupporterperks?appid=<your_app_id>
 
