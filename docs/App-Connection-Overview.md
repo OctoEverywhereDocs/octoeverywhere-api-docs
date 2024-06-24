@@ -48,9 +48,21 @@ Once created, an App Connection context and credentials remain valid until:
 1. The user deletes their OctoEverywhere account.
 2. The user removes the printer from their account.
 3. The user revokes the App Connection from the OctoEverywhere website.
-4. The user's account downgrades from being a supporter.
 
 You can use the OctoEverywhere APIs described below to query OctoEverywhere for the state an App Connection at anytime.
+
+### OctoEverywhere Supporter Status
+
+App Connections require more load on the OctoEverywhere service than standard remote access usage. Since OctoEverywhere is a community-funded project, we have to balance the community funding with the cost of running the service. Thus, we require users to have Supporter Perks to use App Connections. 
+
+If a user's account loses Supporter Perks, they will not have access to any App Connections they have set up. **However, if the user becomes an OctoEverywhere supporter again, all of the existing App Connections will become valid once again, so no re-setup is required!**
+
+When a user loses Supporter Perks, all App Connection API calls will return a [`605` HTTP status code, as denoted on the App Connections Usage page.](App-Connection-Usage.md)
+
+**If a `605` HTTP status code is returned, the app should link the user to the following URL which gives the user details on what's wrong and how they fix it.** Using this common page ensures if any of the App Connection supporter detials change in the future, they will be consistent. Ideally, OctoEverywhere would like to include App Connections as a free feature for all users in the future.
+
+https://octoeverywhere.com/appportal/v1/nosupporterperks?appid=<your_app_id>
+
 
 ### Authentication
 
