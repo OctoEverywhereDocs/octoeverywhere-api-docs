@@ -1,4 +1,4 @@
-# App Connection API
+# App Connection - APIs
 
 The OctoEverywhere App API allows apps to get information from the OctoEverywhere service relating to an existing App Connection they have established.
 

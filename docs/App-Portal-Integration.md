@@ -1,4 +1,4 @@
-# App Connection Portal
+# App Connection - Portal
 
 Check out the [App Connection Overview](App-Connection-Overview.md) page for an overview of the App Connection entire system. 
 

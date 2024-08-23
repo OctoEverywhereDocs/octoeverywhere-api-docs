@@ -2,7 +2,7 @@
 stoplight-id: 3xadck728cc0t
 ---
 
-# OctoEverywhere AI Failure Detection API
+# AI Failure Detection APIs
 
 # TODO
 

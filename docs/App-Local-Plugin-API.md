@@ -1,4 +1,4 @@
-# OctoEverywhere Plugin Local API
+# Local Plugin API
 
 ### TODO
 
@@ -16,4 +16,4 @@ If it **does not** return 404, the plugin is installed.
 Your app can provide the Printer ID to the App Connection Portal for a better integration. This will make the portal aware of exactly what printer the user intends to connect to.
 
 If your app has local access to the OctoPrint instance, you can query the OctoEverywhere plugin using the following URL and parsing the resulting JSON.
-``http://<local OctoPrint IP>/api/plugin/octoeverywhere`
+`http://<local OctoPrint IP>/api/plugin/octoeverywhere`

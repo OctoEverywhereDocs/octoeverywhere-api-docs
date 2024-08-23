@@ -1,4 +1,4 @@
-# OctoEverywhere Notification Webhook
+# Notification Webhooks
 
 [OctoEverywhere's realtime notification engine](https://octoeverywhere.com/notifications?source=devdocs_webhook&handler=webhook) can be extended with custom webhooks! Webhooks allow OctoEverywhere to send instant notifications to any HTTP endpoint you specify. 
 

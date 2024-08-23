@@ -1,4 +1,4 @@
-# OctoPrint API Key Generation
+# App Connection - OctoPrint API Key Generation
 
 As of January of 2022, the OctoEverywhere App Portal can now generate a OctoPrint API key on behalf of your app to make the user setup process even easier!
 
