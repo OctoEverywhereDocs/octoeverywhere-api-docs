@@ -107,6 +107,17 @@ paths:
           description: Your OctoEverywhere API key
       x-stoplight:
         id: ck1qrradzvhim
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                Snapshot:
+                  type: object
+                  x-stoplight:
+                    id: hkqu2p39pjsrc
+                  description: The new jpg print image.
     parameters:
       - schema:
           type: string
