@@ -16,6 +16,26 @@ paths:
       summary: Create Context
       tags: []
       responses:
+        '400':
+          description: "If the API doesn't return a 200, it will return an HTTP error code with a common json body.\r\n\r\nThe json body contains `ErrorType` and `ErrorDetails`. `ErrorType` is a well known string that will map to an [Error Type detailed here.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#errors) The `ErrorDetails` will provide details about the error."
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - ErrorType
+                  - ErrorDetails
+                properties:
+                  ErrorType:
+                    type: string
+                    x-stoplight:
+                      id: nednafncfw7l7
+                    description: 'A well known [Error Type detailed here.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#errors)'
+                  ErrorDetails:
+                    type: string
+                    x-stoplight:
+                      id: tf4oe5c08j4h2
+                    description: Details about this specific error.
         2XX:
           description: A context was successfully created.
           content:
@@ -48,7 +68,7 @@ paths:
       operationId: create-context
       x-stoplight:
         id: kgomtjwkt3dj9
-      description: "The Create Context API creates a new context for AI failure detection session. The lifetime of a context is a single print, each new print should create a new context. The context does not need to be destroyed; it will auto-delete after 14 days.\r\n\r\nThis API should always be called with the primary hostname `gadget-pv1-oeapi.octoeverywhere.com`. Ex: `https://gadget-pv1-oeapi.octoeverywhere.com/api/gadget/v1/createcontex`\r\n\r\n\r\nThe optional `WarningConfidenceLevel` and `PauseConfidenceLevel` parameters adjust how confident temporal combination model needs to be before invoking the warning or pause suggestion.The default value is 3 if unset. A lower value will mean the model will be less confident when it sends the warning or pause suggestion, which might catch more issues but also could make false-positive suggestions more often. A higher value makes the model more confident before it issues the suggestion, which means it might miss minor print failure but be far less likely to make a false-positive suggestion.\r\n\r\n\r\nThe json response contains the context id and two URLs, `ProcessRequestUrl` and `FallbackProcessRequestUrl`. The `ProcessRequestUrl` URL is the full URL your program should use for [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) calls for the lifetime of this context. If the `ProcessRequestUrl` fails, your program should fall back to the `FallbackProcessRequestUrl` URL and use it for the remaining lifetime of the context.\r\n\r\n\r\n"
+      description: "The Create Context API creates a new context for AI failure detection session. The lifetime of a context is a single print, each new print should create a new context. The context does not need to be destroyed; it will auto-delete after 14 days.\r\n\r\nThis API should always be called with the primary hostname `gadget-pv1-oeapi.octoeverywhere.com`. Ex: `https://gadget-pv1-oeapi.octoeverywhere.com/api/gadget/v1/createcontex`\r\n\r\n\r\nThe optional `WarningConfidenceLevel` and `PauseConfidenceLevel` parameters adjust how confident temporal combination model needs to be before invoking the warning or pause suggestion.The default value is 3 if unset. A lower value will mean the model will be less confident when it sends the warning or pause suggestion, which might catch more issues but also could make false-positive suggestions more often. A higher value makes the model more confident before it issues the suggestion, which means it might miss minor print failure but be far less likely to make a false-positive suggestion.\r\n\r\n\r\nThe json response contains the context id and two URLs, `ProcessRequestUrl` and `FallbackProcessRequestUrl`. The `ProcessRequestUrl` URL is the full URL your program should use for [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) calls for the lifetime of this context. If the `ProcessRequestUrl` fails, your program should fall back to the `FallbackProcessRequestUrl` URL and use it for the remaining lifetime of the context.\r\n\r\n[Read this doc for a full API overview.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is)\r\n\r\n"
       parameters:
         - schema:
             type: string
