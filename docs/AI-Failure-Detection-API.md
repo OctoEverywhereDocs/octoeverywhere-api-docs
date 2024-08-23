@@ -58,6 +58,10 @@ That's it! Continuously call the Process API with a new snapshot to keep the AI 
 
 You must wait at least the time interval required by `NextProcessIntervalSec`, but you may wait for a longer interval if you wish. Each time you call the Process API more signals will be gathered by the temporal combination model, which will allow it to gain confidence if the print's state.
 
+## Errors
+
+Coming soon! 
+
 ## High Availability
 
 OctoEverywhere's AI failure detection service achieves high availability and robustness by controlling the rate at which process APIs are called and load balancing between regions.
@@ -73,9 +77,9 @@ The `ProcessRequestUrl` allows the service to drive traffic intelligently when t
 
 ### NextProcessIntervalSec
 
-The `NextProcessIntervalSec`
+The `NextProcessIntervalSec` value is used to globally set the rate at which the servers can accept Process requests. The goal is to accept as many process requests as possible for the best failure detection possible. However, during peak times, the interval will be increased so the servers don't get overwhelmed.
+
+Your service or app is always welcome to call the Process API at any rate, as long as it's longer than the `NextProcessIntervalSec` last returned. Calling the Process API more frequently will produce better and faster print failure detection but will cost more due to increased API usage.
 
 
-## Errors
 
-TODO 
