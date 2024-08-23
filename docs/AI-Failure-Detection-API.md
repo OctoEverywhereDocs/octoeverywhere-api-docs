@@ -22,10 +22,13 @@ You only pay for what you use. **All developers get 5000 API calls per month 100
 
 Our pricing model additive tiers, the more you need, the less it costs.
 
-- 0-5000 API calls - Free
-- 5k-1m API calls - $0.0004 USD per API call.
-- 1m-20m API calls - $0.00025 USD per API call.
-- 20m+ API calls - $0.00015 USD per API call.
+
+Number Of API Calls | Price Per API Call in USD
+---------|---------
+0-5,000 | Free
+5,000-1m | $0.0004
+1m-20m |  $0.00025
+20m+ | $0.00015
 
 
 
