@@ -36,9 +36,9 @@ We offer volume pricing for customers with high API demands. [Please get in touc
 
 ## SDKs
 
-We currently offer an AI Failure Detection SDK for [Python](https://github.com/OctoEverywhere/Gadget-Python-Sdk), with other languages coming soon.
+We currently offer an [AI Failure Detection SDK for Python,](https://github.com/OctoEverywhere/Gadget-Python-Sdk) and more languages will be introduced soon.
 
-The SDK is also a great way to understand the APIs, parameters, and how the APIs are called.
+**We recommend using the [Python SDK](https://github.com/OctoEverywhere/Gadget-Python-Sdk/blob/main/gadgetsdk/_gadgetinspectionsession.py) as a reference implementation.** The SDK is a great way to understand the APIs, parameters, and calling patterns of the APIs.
 
 ## API Overview
 
