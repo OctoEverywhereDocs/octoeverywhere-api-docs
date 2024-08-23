@@ -64,9 +64,31 @@ That's it! Continuously call the [Process API](https://octoeverywhere.stoplight.
 
 Your program **must wait for time interval** required by `NextProcessIntervalSec` between [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) calls, but your program can also opt to wait longer if desired. Each time you call the [Process API,](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) more signals will be gathered by the temporal combination model, which will allow it to gain confidence in the print's state.
 
-## Errors
+## Error Handling
 
-Coming soon! 
+If any API fails, it will return a non HTTP 200 error code and a common json error object as the HTTP response body on failure.
+
+`"ErrorType":"OE_INTERNAL_ERROR", "ErrorDetails"; "A string with error details."`
+
+`ErrorType` will have one of the well-known error strings below. `ErrorDetails` will be a string with details on the failure.
+
+### Well Known Error Types
+
+Client Actionable Errors:
+
+- `OE_BAD_ARGS` - The arguments required to pass for the API were missing or invalid.
+- `OE_ARGS_PARSE_FAILED` - The API handler failed to parse the request json body.
+- `OE_CONTEXT_RATE_LIMITED` - Indicates this context id has made too many requests and has been rate-limited.
+- `OE_IMAGE_DECODE_FAILED` - Only returned from the Process API indicating the jpeg image failed to decode.
+- `OE_INVALID_API_KEY` - The API key in the `X-API-Key` header was missing or incorrect.
+- `OE_API_KEY_BLOCKED_PAYMENT_FAILED` - The API key account owner has an outstanding balance that needs to be paid before the Process API can be used.
+
+Backend Server Errors:
+
+
+- `OE_BACKEND_THROTTLED` - The Process API request had to be temporally throttled. Try again after the next delay interval.
+- `OE_INTERNAL_ERROR` - A generic error for something going wrong in the service. Try again after the next delay interval.
+
 
 ## High Availability
 
