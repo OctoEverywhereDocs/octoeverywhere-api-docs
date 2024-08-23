@@ -17,7 +17,7 @@ paths:
       tags: []
       responses:
         '400':
-          description: "If the API doesn't return a 200, it will return an HTTP error code with a common json body.\r\n\r\nThe json body contains `ErrorType` and `ErrorDetails`. `ErrorType` is a well known string that will map to an [Error Type detailed here.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#errors) The `ErrorDetails` will provide details about the error."
+          description: "If the API doesn't return a 200, it will return an HTTP error code with a common json error object body.\r\n\r\n**Note that many different HTTP error codes can be returned; they will all contain the json error body described here.**\r\n\r\nThe json body contains `ErrorType` and `ErrorDetails`. `ErrorType` is a well known string that will map to an [Error Type detailed here.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#errors) The `ErrorDetails` will provide details about the error."
           content:
             application/json:
               schema:
@@ -128,11 +128,63 @@ paths:
             application/json:
               schema:
                 type: object
-                properties: {}
+                required:
+                  - NextProcessIntervalSec
+                  - Score
+                  - WarningSuggested
+                  - PauseSuggested
+                properties:
+                  NextProcessIntervalSec:
+                    type: integer
+                    x-stoplight:
+                      id: tmnvhgqzy73gi
+                    minimum: 20
+                    example: 40
+                    description: This indicates minimum amount of time that should elapse from this call before the next Process API call. This value is dynamic based on our server load; it averages around 40 seconds. Your integration is free to choose a longer time if desired.
+                  Score:
+                    type: integer
+                    x-stoplight:
+                      id: s2ytancr2ybzn
+                    example: 5
+                    minimum: 0
+                    maximum: 100
+                    description: This is the temporal combination model print quality score. The score ranges from 0-100. 0 indicates a perfect print and 100 indicates a strong probability of a failure. You can use this score directly to indicate the current print quality to the user.
+                  WarningSuggested:
+                    type: boolean
+                    x-stoplight:
+                      id: 3tm8tuefpb7dg
+                    default: false
+                    description: Set to true if the temporal combination model is confident there might be a print issue and the user should be informed. This decision is based on many signals and is only sent when there's high confidence of the warning state.
+                  PauseSuggested:
+                    type: boolean
+                    x-stoplight:
+                      id: sp2vuq8tyqe3z
+                    default: false
+                    description: Set to true if the temporal combination model is confident that there is probably a print failure and that the print should be paused. This decision is based on many signals and is only sent when there's high confidence that the print has failed.
+        '400':
+          description: "If the API doesn't return a 200, it will return an HTTP error code with a common json error object body.\r\n\r\n**Note that many different HTTP error codes can be returned; they will all contain the json error body described here.**\r\n\r\nThe json body contains `ErrorType` and `ErrorDetails`. `ErrorType` is a well known string that will map to an [Error Type detailed here.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#errors) The `ErrorDetails` will provide details about the error."
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - ErrorType
+                  - ErrorDetails
+                properties:
+                  ErrorType:
+                    type: string
+                    x-stoplight:
+                      id: 5vi8e53hdw4ij
+                    description: 'A well known [Error Type detailed here.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#errors)'
+                  ErrorDetails:
+                    type: string
+                    x-stoplight:
+                      id: x19b6434q30y1
+                    description: Details about this specific error.
       operationId: process
       x-stoplight:
         id: hb9xvo995a4px
-      description: "The Process API is where the magic happens. This API must be called with a context created by the [Create Context API.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/kgomtjwkt3dj9-create-context) The API also must include a current jpeg image of the print. Using our ML image models, the Process API will process the new image into the previous context. The temporal combination model will then produce an output based on the past context, current image, and other signals.\r\n\r\nThe usage of this API is tacked as part of our [API pricing.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#pricing) **All developers get 5000 free calls per month.**\r\n\r\nThe image must be attached as `multipart/form-data` content-type POST request. This is a common request type that is supported by most built-in HTTP libraries in modern languages. For an example, [see our Python SDKs](https://github.com/OctoEverywhere/Gadget-Python-Sdk/blob/861583ed69a696523b3fb3288736572a2e61f504/gadgetsdk/_gadgetinspectionsession.py#L201) usage of the `requests` library. There can only be one \"file\" attached in the multipart data; the name of the image file doesn't matter.\r\n\r\nThe Process API returns an int value `NextProcessIntervalSec` that indicates the minimum amount of time that must elapse before the next Process API call. However, your program can opt to wait longer if desired. Each time you call the Process API, more signals will be gathered by the temporal combination model, which will allow it to gain confidence in the print's state.\r\n\r\nThe following are also returned:\r\n\r\n- **Score** int\r\n    - This is the temporal combination model print quality score. The score ranges from 0-100. 0 indicates a perfect print and 100 indicates a strong probability of a failure. You can use this score directly to indicate the current print quality to the user.\r\n- **WarningSuggested** boolean\r\n    - Set to true if the temporal combination model is confident there might be a print issue and the user should be informed. This decision is based on many signals and is only sent when there's high confidence of the warning state.\r\n- **PauseSuggested** boolean\r\n     - Set to true if the temporal combination model is confident that there is probably a print failure and that the print should be paused. This decision is based on many signals and is only sent when there's high confidence that the print has failed."
+      description: "The Process API is where the magic happens. This API must be called with a context created by the [Create Context API.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/kgomtjwkt3dj9-create-context) The API also must include a current jpeg image of the print. Using our ML image models, the Process API will process the new image into the previous context. The temporal combination model will then produce an output based on the past context, current image, and other signals.\r\n\r\nThe usage of this API is tacked as part of our [API pricing.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#pricing) **All developers get 5000 free calls per month.**\r\n\r\nThe image must be attached as `multipart/form-data` content-type POST request. This is a common request type that is supported by most built-in HTTP libraries in modern languages. For an example, [see our Python SDKs](https://github.com/OctoEverywhere/Gadget-Python-Sdk/blob/861583ed69a696523b3fb3288736572a2e61f504/gadgetsdk/_gadgetinspectionsession.py#L201) usage of the `requests` library. There can only be one \"file\" attached in the multipart data; the name of the image file doesn't matter.\r\n\r\nThe Process API returns an int value `NextProcessIntervalSec` that indicates the minimum amount of time that must elapse before the next Process API call. However, your program can opt to wait longer if desired. Each time you call the Process API, more signals will be gathered by the temporal combination model, which will allow it to gain confidence in the print's state.\r\n\r\nThe following are also returned:\r\n\r\n- **Score** int\r\n    - This is the temporal combination model print quality score. The score ranges from 0-100. 0 indicates a perfect print and 100 indicates a strong probability of a failure. You can use this score directly to indicate the current print quality to the user.\r\n- **WarningSuggested** boolean\r\n    - Set to true if the temporal combination model is confident there might be a print issue and the user should be informed. This decision is based on many signals and is only sent when there's high confidence of the warning state.\r\n- **PauseSuggested** boolean\r\n     - Set to true if the temporal combination model is confident that there is probably a print failure and that the print should be paused. This decision is based on many signals and is only sent when there's high confidence that the print has failed.\r\n\r\n[Read this doc for a full API overview.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is)"
       parameters:
         - schema:
             type: string
