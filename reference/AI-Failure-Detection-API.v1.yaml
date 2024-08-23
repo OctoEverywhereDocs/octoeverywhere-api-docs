@@ -48,7 +48,7 @@ paths:
       operationId: create-context
       x-stoplight:
         id: kgomtjwkt3dj9
-      description: "The Create Context API allows for the creation of a new context for AI failure detection.\r\n\r\nThis API should always be called with the primary OctoEverywhere AI Failure Detection API hostname `gadget-pv1-oeapi.octoeverywhere.com`.\r\n\r\nExample: `https://gadget-pv1-oeapi.octoeverywhere.com/api/gadget/v1/createcontex`\r\n\r\nThe context does not need to be destoryed, it will auto delete after 14 days.\r\n\r\n"
+      description: "The Create Context API creates a new context for AI failure detection session. The lifetime of a context is a single print, each new print should create a new context.\r\n\r\nThis API should always be called with the primary hostname `gadget-pv1-oeapi.octoeverywhere.com`. Ex: `https://gadget-pv1-oeapi.octoeverywhere.com/api/gadget/v1/createcontex`\r\n\r\nThe context does not need to be destroyed; it will auto-delete after 14 days.\r\n\r\nThe `WarningConfidenceLevel` and `PauseConfidenceLevel` parameters are optional and will adjust how confident the temporal combination model needs to be before invoking the suggestion. The default value is 3, a lower value will mean the model will be less confident and will  \r\n\r\n"
       parameters:
         - schema:
             type: string
