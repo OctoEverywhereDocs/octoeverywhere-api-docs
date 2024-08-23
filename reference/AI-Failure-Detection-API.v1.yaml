@@ -98,60 +98,12 @@ paths:
                   default: 3
                   description: "            Optional Parameter\r\n            This adjusts the temporal combination model's required confidence in a failure to trigger the pause print suggestion.\r\n            The value must be between 1-5, where 1 is the least confident (will pause with less confidence) and 5 is the most confident (will only pause when very confident).\r\n            If not set, the default value of 3 will be used."
   '/api/gadget/v1/process/{ID}':
-    get:
-      summary: Process API
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  NextProcessIntervalSec:
-                    type: integer
-                    x-stoplight:
-                      id: pjl40jjr6xp76
-                    default: 40
-                    description: The minimum interval between the response and the next Process API call is in seconds.
-                  Score:
-                    type: integer
-                    x-stoplight:
-                      id: yqo01rkjkuc49
-                    minimum: 0
-                    maximum: 100
-                    description: 'The current temporal combination model''s probability of failure. 0 is a perfect print, 100 is very likely a failure.'
-                  WarningSuggested:
-                    type: boolean
-                    x-stoplight:
-                      id: ibt3s7is2i87o
-                  PauseSuggested:
-                    type: boolean
-                    x-stoplight:
-                      id: 01c1ru8vfu63b
-      operationId: process
-      description: The Process API is called every time interval to process a new print image and update the ML model's state.
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: X-API-Key
-          description: Your OctoEverywhere API key
-      x-stoplight:
-        id: ck1qrradzvhim
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                Snapshot:
-                  type: object
-                  x-stoplight:
-                    id: hkqu2p39pjsrc
-                  description: The new jpg print image.
     parameters:
+      - schema:
+          type: string
+        name: ID
+        in: path
+        required: true
       - schema:
           type: string
         name: ID
@@ -166,6 +118,33 @@ paths:
     servers:
       - url: ' https://<your primary process url>.octoeverywhere.com'
         description: ''
+    post:
+      summary: Process
+      tags: []
+      responses:
+        '200':
+          description: 200 OK is returned after the image has successfully been processed through the ML models.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      operationId: process
+      x-stoplight:
+        id: hb9xvo995a4px
+      description: "The Process API is where the magic happens. This API must be called with a context created by the [Create Context API.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/kgomtjwkt3dj9-create-context) The API also must include a current jpeg image of the print. Using our ML image models, the Process API will process the new image into the previous context. The temporal combination model will then produce an output based on the past context, current image, and other signals.\r\n\r\nThe usage of this API is tacked as part of our [API pricing.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#pricing) **All developers get 5000 free calls per month.**\r\n\r\nThe image must be attached as `multipart/form-data` content-type POST request. This is a common request type that is supported by most built-in HTTP libraries in modern languages. For an example, [see our Python SDKs](https://github.com/OctoEverywhere/Gadget-Python-Sdk/blob/861583ed69a696523b3fb3288736572a2e61f504/gadgetsdk/_gadgetinspectionsession.py#L201) usage of the `requests` library. There can only be one \"file\" attached in the multipart data; the name of the image file doesn't matter.\r\n\r\nThe Process API returns an int value `NextProcessIntervalSec` that indicates the minimum amount of time that must elapse before the next Process API call. However, your program can opt to wait longer if desired. Each time you call the Process API, more signals will be gathered by the temporal combination model, which will allow it to gain confidence in the print's state.\r\n\r\nThe following are also returned:\r\n\r\n- **Score** int\r\n    - This is the temporal combination model print quality score. The score ranges from 0-100. 0 indicates a perfect print and 100 indicates a strong probability of a failure. You can use this score directly to indicate the current print quality to the user.\r\n- **WarningSuggested** boolean\r\n    - Set to true if the temporal combination model is confident there might be a print issue and the user should be informed. This decision is based on many signals and is only sent when there's high confidence of the warning state.\r\n- **PauseSuggested** boolean\r\n     - Set to true if the temporal combination model is confident that there is probably a print failure and that the print should be paused. This decision is based on many signals and is only sent when there's high confidence that the print has failed."
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: X-API-Key
+          description: You OctoEverywhere developer API key.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+        description: 'The image must be attached as `multipart/form-data` content-type POST request. This is a common request type that is supported by most built-in HTTP libraries in modern languages. For an example, [see our Python SDKs](https://github.com/OctoEverywhere/Gadget-Python-Sdk/blob/861583ed69a696523b3fb3288736572a2e61f504/gadgetsdk/_gadgetinspectionsession.py#L201) usage of the `requests` library. There can only be one "file" attached in the multipart data; the name of the image file doesn''t matter.'
 components:
   schemas: {}
   securitySchemes: {}
