@@ -30,12 +30,12 @@ paths:
                     type: string
                     x-stoplight:
                       id: nednafncfw7l7
-                    description: 'A well known [Error Type detailed here.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#errors)'
+                    description: '        A well known [Error Type detailed here.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#errors)'
                   ErrorDetails:
                     type: string
                     x-stoplight:
                       id: tf4oe5c08j4h2
-                    description: Details about this specific error.
+                    description: '        Details about this specific error.'
         2XX:
           description: A context was successfully created.
           content:
@@ -140,7 +140,7 @@ paths:
                       id: tmnvhgqzy73gi
                     minimum: 20
                     example: 40
-                    description: This indicates minimum amount of time that should elapse from this call before the next Process API call. This value is dynamic based on our server load; it averages around 40 seconds. Your integration is free to choose a longer time if desired.
+                    description: '        This indicates minimum amount of time that should elapse from this call before the next Process API call. This value is dynamic based on our server load; it averages around 40 seconds. Your integration is free to choose a longer time if desired.'
                   Score:
                     type: integer
                     x-stoplight:
@@ -148,19 +148,19 @@ paths:
                     example: 5
                     minimum: 0
                     maximum: 100
-                    description: This is the temporal combination model print quality score. The score ranges from 0-100. 0 indicates a perfect print and 100 indicates a strong probability of a failure. You can use this score directly to indicate the current print quality to the user.
+                    description: '        This is the temporal combination model print quality score. The score ranges from 0-100. 0 indicates a perfect print and 100 indicates a strong probability of a failure. You can use this score directly to indicate the current print quality to the user.'
                   WarningSuggested:
                     type: boolean
                     x-stoplight:
                       id: 3tm8tuefpb7dg
                     default: false
-                    description: Set to true if the temporal combination model is confident there might be a print issue and the user should be informed. This decision is based on many signals and is only sent when there's high confidence of the warning state.
+                    description: '        Set to true if the temporal combination model is confident there might be a print issue and the user should be informed. This decision is based on many signals and is only sent when there''s high confidence of the warning state.'
                   PauseSuggested:
                     type: boolean
                     x-stoplight:
                       id: sp2vuq8tyqe3z
                     default: false
-                    description: Set to true if the temporal combination model is confident that there is probably a print failure and that the print should be paused. This decision is based on many signals and is only sent when there's high confidence that the print has failed.
+                    description: '        Set to true if the temporal combination model is confident that there is probably a print failure and that the print should be paused. This decision is based on many signals and is only sent when there''s high confidence that the print has failed.'
         '400':
           description: "If the API doesn't return a 200, it will return an HTTP error code with a common json error object body.\r\n\r\n**Note that many different HTTP error codes can be returned; they will all contain the json error body described here.**\r\n\r\nThe json body contains `ErrorType` and `ErrorDetails`. `ErrorType` is a well known string that will map to an [Error Type detailed here.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#errors) The `ErrorDetails` will provide details about the error."
           content:
@@ -175,12 +175,12 @@ paths:
                     type: string
                     x-stoplight:
                       id: 5vi8e53hdw4ij
-                    description: 'A well known [Error Type detailed here.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#errors)'
+                    description: '        A well known [Error Type detailed here.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#errors)'
                   ErrorDetails:
                     type: string
                     x-stoplight:
                       id: x19b6434q30y1
-                    description: Details about this specific error.
+                    description: '        Details about this specific error.'
       operationId: process
       x-stoplight:
         id: hb9xvo995a4px
