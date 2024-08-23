@@ -131,7 +131,7 @@ paths:
         in: path
         required: true
     servers:
-      - url: ''
+      - url: ' https://<your primary process url>.octoeverywhere.com'
         description: ''
 components:
   schemas: {}
