@@ -31,7 +31,7 @@ Our pricing model additive tiers, the more you need, the less it costs.
 
 We offer volume pricing for customers with high API demands. [Please get in touch with us to discuss details.](https://octoeverywhere.com/support?source=dev_docs_ai_failure_detection)
 
-## SDK
+## SDKs
 
 We currently offer an AI Failure Detection SDK for [Python](https://github.com/OctoEverywhere/Gadget-Python-Sdk), with other languages coming soon.
 
