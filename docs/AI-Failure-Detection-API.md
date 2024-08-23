@@ -22,7 +22,7 @@ You only pay for what you use. **All developers get 5000 API calls per month 100
 
 Our pricing model additive tiers, the more you need, the less it costs.
 
-- 0-5000 API calls : 100% Free
+- 0-5000 API calls - Free
 - 5k-1m API calls - $0.0004 USD per API call.
 - 1m-20m API calls - $0.00025 USD per API call.
 - 20m+ API calls - $0.00015 USD per API call.
@@ -31,17 +31,23 @@ Our pricing model additive tiers, the more you need, the less it costs.
 
 We offer volume pricing for customers with high API demands. [Please get in touch with us to discuss details.](https://octoeverywhere.com/support?source=dev_docs_ai_failure_detection)
 
+## SDK
+
+We currently offer an AI Failure Detection SDK for [Python](https://github.com/OctoEverywhere/Gadget-Python-Sdk), with other languages coming soon.
+
+The SDK is also a great way to understand the APIs, parameters, and how the APIs are called.
+
 ## API Overview
 
 ### 1) Create A Print Context
 
-Every new print must create a new context for the ML models to operate on. To make a new context, make a POST request to the [Create Context API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context), providing your API key and the optional AI sensitivity parameters.
+Every new print must create a new context for the ML models to operate on. To make a new context, make a POST request to the [Create Context API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context), providing your API key and the optional AI confidence parameters. [Full details.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context)
 
-The [Create Context API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context) will return the Context ID, a primary processing API URL, and a fallback API URL. The primary processing URL is where you should make all future Process API calls unless they fail. If there's a failure from the primary processing URL, you should switch to the fallback URL and use it for all Process API calls for the remainder of the context lifetime. [More details.](url)
+The [Create Context API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context) will return the Context ID, a primary processing API URL, and a fallback API URL. The primary processing URL is where you should make all future Process API calls unless they fail. If there's a failure from the primary processing URL, you should switch to the fallback URL and use it for all Process API calls for the remainder of the context lifetime. [Full details.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context)
 
 ### 2) Process An Image
 
-To start the AI failure detection, send a jpg image to the [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) using the URL returned from the [Create Context API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context) call. 
+To start the AI failure detection, send a jpg image to the [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) using the `ProcessRequestUrl` URL returned from the [Create Context API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context) call. 
 
 The [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) accepts POST requests with the image included using the `multipart/form-data` Content Type. Multipart form data payloads are built into all modern language HTTP libraries, including Python, CPP, C#, Java, JS, and more. [More details.]()
 
@@ -54,9 +60,9 @@ The [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-do
 
 ### 3) Repeat
 
-That's it! Continuously call the Process API with a new snapshot to keep the AI model updated with the print state. 
+That's it! Continuously call the [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) with a new snapshot to keep the AI model updated with the print state. 
 
-You must wait at least the time interval required by `NextProcessIntervalSec`, but you may wait for a longer interval if you wish. Each time you call the Process API more signals will be gathered by the temporal combination model, which will allow it to gain confidence if the print's state.
+Your program **must wait for time interval** required by `NextProcessIntervalSec` between [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) calls, but your program can also opt to wait longer if desired. Each time you call the [Process API,](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) more signals will be gathered by the temporal combination model, which will allow it to gain confidence in the print's state.
 
 ## Errors
 
