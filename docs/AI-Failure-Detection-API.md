@@ -4,115 +4,47 @@ stoplight-id: 3xadck728cc0t
 
 # AI Failure Detection APIs
 
-# TODO
+OctoEverywhere empowers 3D printing with free and unlimited 3D printing AI failure detection, which we love named Gadget. Gadget processes over 4 million images a day, consuming over 430 gigabytes of data each day.
 
-[OctoEverywhere's realtime notification engine](https://octoeverywhere.com/notifications?source=devdocs_webhook&handler=webhook) can be extended with custom webhooks! Webhooks allow OctoEverywhere to send instant notifications to any HTTP endpoint you specify. 
+Our AI failure detection service uses bleeding-edge ML models to process millions of images daily with incredibly high accuracy. Our models are continuously updated with real-time feedback from the community, making them more adaptive and accurate every day. 
 
-### What Can You Do With WebHooks?
+To complement our cutting-edge ML image inference models, OctoEverywhere developed a temporal combination model that draws in several signals to make key decisions on when to warn the user about a possible failure or issue a command to pause the print.
 
-With little effort and technical knowledge, your imagination is the limit! You could...
+All of these systems are combined using our worldwide server network to provide incredible results. Our community agrees that OctoEverywhere provides the most accurate and timely AI failure detection on the market today.
 
-- Play the Mario Kart "race start" sound anytime you begin a print.
-- Ring a siren and flash lights when [Gadget](https://octoeverywhere.com/gadget) detects a print failure.
-- Make your [Emo](https://living.ai/emo/) dance when a print completes successfully.
-- Tweet realtime print progress and full-resolution snapshots as you're printing.
+## You Can Do It To! 🚀
 
-What can you come up with? We would love to see your creations, [share them on our Discord!](https://discord.gg/octoeverywhere-797933815812980797)
+OctoEverywhere AI Failure Detection APIs give you access to the same incredible AI failure detection service used by OctoEverywhere's customers. Our APIs are designed to be simple and easy to use. Your app or service simply needs to provide jpeg images, and our servers will do the work to return you a simple and easy to take action on output.
 
-### Wow! How do I set this up?
+## Pricing 
 
-There are two ways you can receive the  HTTP POST notifications from OctoEverywhere:
+You only pay for what you use. Each API call costs USD $0.0004, resulting in a cost of about $0.036 per hour. We give all developers 5000 free calls per month or about 55 hours of free AI failure detection.
 
-- LAN Webhook Requests
-- Public Internet Webhook Requests
+We offer volume pricing for customers with high API demands. [Please get in touch with us to discuss details.](https://octoeverywhere.com/support?source=dev_docs_ai_failure_detection)
 
-#### LAN Webhook Requests
+## API Overview
 
-In LAN mode, OctoEverywhere will send webhook http requests from the OctoEverywhere plugin on your local network. This allows you to run a service on your local network that's **not exposed to the public internet.** This can make setting up an HTTP endpoint much easier.
+### 1) Create A Context
 
-Then URL for LAN HTTP requests can be any valid LAN address. Such as IP addresses `192.168.1.10`, local LAN domains `octopi.local`, Docker network bridges `notificationHandler`, etc.
+Each new print must create a new context for the ML models to operate on. To make a new context, make a POST request to the Create Context API, providing your API key and the optional AI sensitivity parameters.
 
-#### Public Internet Webhook Requests
+The Create Context API will return the context ID, a primary processing API URL, and a fallback API URL. The primary processing URL is where you should make all future Process API calls unless they fail. If there's a failure from the primary processing URL, you should switch to the fallback URL and use it for all Process API calls for the remainder of the context lifetime.
 
-The webhook HTTP requests will come from the OctoEverywhere service in this mode. The HTTP request can be sent to any HTTP endpoint publicly accessible on the public internet.
+### 2) Process An Image
 
-If you're using internet-based webhooks, **it's recommended that you use https for your webhook URL** to keep the connection secure.
+To start the AI failure detection, send a jpg image to the Process API using the URLs you got from the Create Context API call. The Process API accepts POST requests with the image included as a multipart Content Type. Multipart payload types are built into all modern language HTTP libraries, including Python, CPP, C#, Java, JS, and more. 
 
-### Secret Key - Optional
+The Process API will return a score, two booleans, and a minimal time interval before the next Process API call can be made. 
 
-When you set up your webhook in OctoEverywhere, you can optionally specify any string less than or equal to 128 chars that will be sent in every webhook request.
+- **Score** `int` - The score ranges from 0-100, which indicates the probability of a failure, where 0 is a perfect print, and 100 is a very likely failure. Your application or service can use this value directly, or you can use our temporal combination model output flags that indicate if you should show a warning to the user or pause the print. 
+- **WarningSuggested** `boolean` - This is the output of the temporal combination model when it suggests a warning of a possible print failure should be sent to the user. This prediction is based on many signals including the `Score`.
+- **PauseSuggested** `boolean` - This is the output of the temporal combination model when it suggests pausing the print due to the high likelihood of a print failure. This prediction is based on many signals including the `Score`.
+- **NextProcessIntervalSec** `int` - The minimum amount of time that should elapse from this call before the next Process API call. This value is dynamic based on our server load; it averages around 40 seconds.
 
-This allows your HTTP server to verify that the request came from OctoEverywhere since only OctoEverywhere and you know the secret key.
+### 3) Repeat
 
+That's it! Keep calling the Process API with a new snapshot at least or after the minimum next Process time interval. Each time you call the Process API more signals will be gathered by the temporal combination model, which will allow it to gain confidence if the print is a good or bad state.
 
-### What is sent in the REST endpoint?
+## Errors
 
-The request is an **HTTP POST** request with a json body payload. Bookmark this page, because over time we will add new notification types and JSON properites. The HTTP POST will have a JSON body defined as:
-
-- **PrinterId**
-  - (string) This is a unique ID that defines your printer. This ID will not change as long as your printer is attached to your account.
-- **SecretKey**
-  - (string) If you set a secret key, it will be included here.
-- **PrintId**
-  - (string) A string that's unique for each print. This string is created when a print starts and remains until the print is complete or stopped. This is useful for tracking which notifications are associated with which print jobs.
-- **EventType**
-	- (int, enum) This enum maps to the notification type. The event types are defined below.
-- **PrinterName**
-  - (string) The name you assigned your printer. This name will change if the printer is renamed on OctoEverywhere.
-- **SnapshotUrl**
-	- (string, optional) If a snapshot can be taken, this will be a URL where the image can be viewed or downloaded. Note this image URL will only remain valid for about 7 days.
-- **QuickViewUrl**
-  - (string) A url to OctoEverywhere's Quick View, which provides a secure internet based way to quickly view the full printer state, pause, and cancel prints.
-- **FileName**
-	- (string, optional) the file name in OctoPrint for the current file being printed.
-- **DurationSec**
-	- (int, optional) the duration of the print, since the start, in seconds.
-- **Progress**
-	- (int, optional) the current print progress as a percentage. Where 0 is 0% and 100 is 100%.
-- **TimeRemainingSec**
-	- (int, optional) the amount of time estimated to be remaining by OctoPrint, in seconds.
-- **ZOffsetMM**
-	- (int, optional) the current z-axis offset in millimeters.
-- **Error**
-	- (string, optonal) for EventTypes that indicate an error, this string might contain some kind of error message from OctoPrint describing the issue.
-
-### Event Types
-
-The following defines the EventType enum. **Remember that over time, more event types will be added to this list.**
-
-1. **Started**
-2. **Complete**
-3. **Failed**
-4. **Paused**
-5. **Resumed**
-6. **Print Progress**
-    - Fired due to a % progress milestone or a timer event.
-7. **Gadget Possible Failure Warning**
-    - Gadget thinks the print might have a failure.
-8. **Gadget Paused Print Due To Failure**
-    - Gadget paused the print because it detected a failure.
-    - Only fires when Gadget Smart Pause is enabled.
-9. **Error**
-    - Fired due to any error from the printer.
-10. **First Layer Complete**
-    - Fired when the first layer of the print is complete.
-11. **Filament Change Required**
-    - Fired when the printer reports a filament change is required. This can be due to a color swap or because the filament ran out.
-12. **User Interaction Required**
-    - Fires when the printer requests user interaction.
-13. **Non-Supporter Notification Limit**
-    - Fired when the user's account hits the daily notification limit.
-    - Standard accounts are limited to 3 webhook notifications a day; all supporter roles get unlimited notifications, [learn more here.](https://octoeverywhere.com/supporter?source=web_hook_dev_doc)
-14. **Third Layer Complete**
-    - Just like FirstLayerComplete, but this fires on the third layer. Some users might find it more useful to check their print after the first few layers are done or both! It's up to you!
-15. **Bed Cooldown Complete**
-    - Fired when the print bed has cooled down after a print ends.
-
-
-### POST Responses And Constraints
-
-**Your webhook should return HTTP 200 OK.** If your webhook fails too many times in a row, the webhook will be disabled. You can setup the webhook again on the notification page.
-
-**The HTTP request will timeout in 10 seconds.** Your endpoint must return a 200 OK before the timeout or the request will be considered a failure.
-
-If you have any issues, questions, or feature requests, reach out to our [development team](https://octoeverywhere.com/support). We would love to hear from you!
+TODO 
