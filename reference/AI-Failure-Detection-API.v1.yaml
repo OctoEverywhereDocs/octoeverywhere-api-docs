@@ -62,7 +62,7 @@ paths:
       x-stoplight:
         id: sd17hl8caalt1
     servers:
-      - url: 'https://gadget-api.octoeverywhere.com'
+      - url: 'https://gadget-pv1-oeapi.octoeverywhere.com'
         description: ''
   '/api/gadget/v1/process/{ID}':
     get:
@@ -130,6 +130,9 @@ paths:
         name: ''
         in: path
         required: true
+    servers:
+      - url: ''
+        description: ''
 components:
   schemas: {}
   securitySchemes:
