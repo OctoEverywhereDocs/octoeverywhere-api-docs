@@ -1,0 +1,129 @@
+openapi: 3.0.0
+x-stoplight:
+  id: akb7f5psdzhz7
+info:
+  title: AI Failure Detection APIs
+  version: '1.0'
+  description: 'For explanations, details, and examples of these APIs, see the [AI Failure Detection API getting started page.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is)'
+servers:
+  - url: ''
+    description: ''
+paths:
+  /api/gadget/v1/createcontext:
+    parameters:
+      - schema:
+          type: string
+        in: header
+    get:
+      summary: Create Context
+      tags: []
+      operationId: create-context
+      description: Use the Create Context API to start a 3D printing AI failure detection API session.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: X-API-Key
+          description: Your OctoEverywhere API key
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                default: 40
+                required:
+                  - ContextId
+                  - ProcessRequestUrl
+                  - FallbackProcessRequestUrl
+                properties:
+                  ContextId:
+                    type: string
+                    x-stoplight:
+                      id: wn4wcpm6ip7y8
+                    description: The ID of the contexted just created.
+                  ProcessRequestUrl:
+                    type: string
+                    x-stoplight:
+                      id: taclb7eylkqgd
+                    description: 'The full URL your application or service should use to make Process API calls. If this API call fails for any reason, you should switch to the fallback URL for the rest of the context lifetime.'
+                  FallbackProcessRequestUrl:
+                    type: string
+                    x-stoplight:
+                      id: uw8w9p4ga8iue
+                    description: The fallback URL that should only be used if the ProcessRequestUrl fails.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+      x-stoplight:
+        id: sd17hl8caalt1
+    servers:
+      - url: 'https://gadget-api.octoeverywhere.com'
+        description: ''
+  '/api/gadget/v1/process/{ID}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  NextProcessIntervalSec:
+                    type: integer
+                    x-stoplight:
+                      id: pjl40jjr6xp76
+                    default: 40
+                    description: The minimum interval between the response and the next Process API call is in seconds.
+                  Score:
+                    type: integer
+                    x-stoplight:
+                      id: yqo01rkjkuc49
+                    minimum: 0
+                    maximum: 100
+                    description: 'The current temporal combination model''s probability of failure. 0 is a perfect print, 100 is very likely a failure.'
+                  WarningSuggested:
+                    type: boolean
+                    x-stoplight:
+                      id: ibt3s7is2i87o
+                  PauseSuggested:
+                    type: boolean
+                    x-stoplight:
+                      id: 01c1ru8vfu63b
+      operationId: process
+      description: The Process API is called every time interval to process a new print image and update the ML model's state.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: X-API-Key
+          description: Your OctoEverywhere API key
+      x-stoplight:
+        id: ck1qrradzvhim
+    parameters:
+      - schema:
+          type: string
+        name: ID
+        in: path
+        required: true
+        description: The context id.
+      - schema:
+          type: string
+        name: ''
+        in: path
+        required: true
+components:
+  schemas: {}
+  securitySchemes:
+    X-API-Key:
+      name: test
+      type: apiKey
+      in: header
+  examples: {}
