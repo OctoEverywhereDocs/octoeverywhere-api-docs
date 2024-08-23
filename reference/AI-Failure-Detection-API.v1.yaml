@@ -15,19 +15,68 @@ paths:
     post:
       summary: Create Context
       tags: []
-      responses: {}
+      responses:
+        2XX:
+          description: A context was successfully created.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - ContextId
+                  - ProcessRequestUrl
+                  - FallbackProcessRequestUrl
+                properties:
+                  ContextId:
+                    type: string
+                    x-stoplight:
+                      id: sygaiedhz7i6m
+                    description: '        The ID of the new context.'
+                    example: uYZkEP0g22nPZwtCj6ASWef9Lpmh81Ahs1mnAdw4Z7PlDFbOK6
+                  ProcessRequestUrl:
+                    type: string
+                    x-stoplight:
+                      id: oyrkf6qw3d08g
+                    description: '        This is the main URL that should be used for all Process API requests for the lifetime of this context.'
+                    example: 'https://gadget-reional-subdomain.octoeverywhere.com/api/gadget/v1/process/uYZkEP0g22nPZwtCj6ASWef9Lpmh81Ahs1mnAdw4Z7PlDFbOK6'
+                  FallbackProcessRequestUrl:
+                    type: string
+                    x-stoplight:
+                      id: seqynqf1gba3v
+                    description: "    This is the fallback URL that can be used if the `ProcessRequestUrl` fails for any reason. \r\n    Once the application swtiches to the `FallbackProcessRequestUrl` it should continue to use it for the lifetime of the context."
+                    example: 'https://gadget-pv1-oeapi.octoeverywhere.com/api/gadget/v1/process/uYZkEP0g22nPZwtCj6ASWef9Lpmh81Ahs1mnAdw4Z7PlDFbOK6'
       operationId: create-context
       x-stoplight:
         id: kgomtjwkt3dj9
-      description: "The Create Context API allows for the creation of a new context for AI failure detection.\r\n\r\nFor a detailed explanation, [see the API overview.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is)"
+      description: "The Create Context API allows for the creation of a new context for AI failure detection.\r\n\r\nThis API should always be called with the primary OctoEverywhere AI Failure Detection API hostname `gadget-pv1-oeapi.octoeverywhere.com`.\r\n\r\nExample: `https://gadget-pv1-oeapi.octoeverywhere.com/api/gadget/v1/createcontex`\r\n\r\nThe context does not need to be destoryed, it will auto delete after 14 days.\r\n\r\n"
       parameters:
         - schema:
             type: string
           in: header
           name: X-API-Key
           description: You OctoEverywhere developer API key.
-    get:
-      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                WarningConfidenceLevel:
+                  type: integer
+                  x-stoplight:
+                    id: mfrfza945tj5d
+                  minimum: 1
+                  maximum: 5
+                  description: "```json\r\nOptional Parameter\r\nThis adjusts the temporal combination model's required confidence in a failure to trigger the warning suggestion.\r\nThe value must be between 1-5, where 1 is the least confident (more warnings) and 5 is the most confident (less warnings).\r\nIf not set, the default value of 3 will be used.\r\n```"
+                  default: 3
+                PauseConfidenceLevel:
+                  type: integer
+                  x-stoplight:
+                    id: wy1w2uz7at298
+                  minimum: 1
+                  maximum: 5
+                  default: 3
+                  description: "            Optional Parameter\r\n            This adjusts the temporal combination model's required confidence in a failure to trigger the pause print suggestion.\r\n            The value must be between 1-5, where 1 is the least confident (will pause with less confidence) and 5 is the most confident (will only pause when very confident).\r\n            If not set, the default value of 3 will be used."
   '/api/gadget/v1/process/{ID}':
     get:
       summary: Process API
