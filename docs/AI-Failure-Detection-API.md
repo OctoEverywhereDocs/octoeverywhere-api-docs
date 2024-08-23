@@ -2,48 +2,79 @@
 stoplight-id: 3xadck728cc0t
 ---
 
-# AI Failure Detection APIs
+# AI Failure Detection APIs 🤖
 
-OctoEverywhere empowers 3D printing with free and unlimited 3D printing AI failure detection, which we love named Gadget. Gadget processes over 4 million images a day, consuming over 430 gigabytes of data each day.
+OctoEverywhere empowers 3D printing with free and unlimited 3D printing AI failure detection with a service we lovingly Gadget. Gadget processes **over 4 million images** a day, consuming **over 430 gigabytes** of data each day.
 
-Our AI failure detection service uses bleeding-edge ML models to process millions of images daily with incredibly high accuracy. Our models are continuously updated with real-time feedback from the community, making them more adaptive and accurate every day. 
+Our AI failure detection service uses bleeding-edge ML models to process millions of images daily with incredibly high accuracy. The models are continuously updated with real-time feedback from the community, making them more adaptive, robust, and accurate every day. 
 
-To complement our cutting-edge ML image inference models, OctoEverywhere developed a temporal combination model that draws in several signals to make key decisions on when to warn the user about a possible failure or issue a command to pause the print.
+To complement our cutting-edge ML image inference models, OctoEverywhere developed a temporal combination model that looks at several signals to make key decisions, like when to warn the user about a possible failure or issue a command to pause the print.
 
-All of these systems are combined using our worldwide server network to provide incredible results. Our community agrees that OctoEverywhere provides the most accurate and timely AI failure detection on the market today.
+Putting these systems together on our high availability worldwide server network produces incredible results. Our community agrees that OctoEverywhere offers the most accurate and timely AI failure detection on the market today.
 
 ## You Can Do It To! 🚀
 
-OctoEverywhere AI Failure Detection APIs give you access to the same incredible AI failure detection service used by OctoEverywhere's customers. Our APIs are designed to be simple and easy to use. Your app or service simply needs to provide jpeg images, and our servers will do the work to return you a simple and easy to take action on output.
+OctoEverywhere AI Failure Detection APIs give you access to the same incredible AI failure detection service used by OctoEverywhere's community. The API is designed to be simple and easy to use, making integration a one-day job. Your app or service simply needs to provide jpg images to our service, and our ML service will return everything you need to understand the print quality and take action if required.
 
 ## Pricing 
 
-You only pay for what you use. Each API call costs USD $0.0004, resulting in a cost of about $0.036 per hour. We give all developers 5000 free calls per month or about 55 hours of free AI failure detection.
+You only pay for what you use. **All developers get 5000 API calls per month 100% for free. 5k API calls will get you about 55 hours of free AI failure detection per month.** 
+
+Our pricing model additive tiers, the more you need, the less it costs.
+
+- 0-5000 API calls : 100% Free
+- 5k-1m API calls - $0.0004 USD per API call.
+- 1m-20m API calls - $0.00025 USD per API call.
+- 20m+ API calls - $0.00015 USD per API call.
+
+
 
 We offer volume pricing for customers with high API demands. [Please get in touch with us to discuss details.](https://octoeverywhere.com/support?source=dev_docs_ai_failure_detection)
 
 ## API Overview
 
-### 1) Create A Context
+### 1) Create A Print Context
 
-Each new print must create a new context for the ML models to operate on. To make a new context, make a POST request to the Create Context API, providing your API key and the optional AI sensitivity parameters.
+Every new print must create a new context for the ML models to operate on. To make a new context, make a POST request to the [Create Context API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context), providing your API key and the optional AI sensitivity parameters.
 
-The Create Context API will return the context ID, a primary processing API URL, and a fallback API URL. The primary processing URL is where you should make all future Process API calls unless they fail. If there's a failure from the primary processing URL, you should switch to the fallback URL and use it for all Process API calls for the remainder of the context lifetime.
+The [Create Context API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context) will return the Context ID, a primary processing API URL, and a fallback API URL. The primary processing URL is where you should make all future Process API calls unless they fail. If there's a failure from the primary processing URL, you should switch to the fallback URL and use it for all Process API calls for the remainder of the context lifetime. [More details.](url)
 
 ### 2) Process An Image
 
-To start the AI failure detection, send a jpg image to the Process API using the URLs you got from the Create Context API call. The Process API accepts POST requests with the image included as a multipart Content Type. Multipart payload types are built into all modern language HTTP libraries, including Python, CPP, C#, Java, JS, and more. 
+To start the AI failure detection, send a jpg image to the [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) using the URL returned from the [Create Context API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context) call. 
 
-The Process API will return a score, two booleans, and a minimal time interval before the next Process API call can be made. 
+The [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) accepts POST requests with the image included using the `multipart/form-data` Content Type. Multipart form data payloads are built into all modern language HTTP libraries, including Python, CPP, C#, Java, JS, and more. [More details.]()
 
-- **Score** `int` - The score ranges from 0-100, which indicates the probability of a failure, where 0 is a perfect print, and 100 is a very likely failure. Your application or service can use this value directly, or you can use our temporal combination model output flags that indicate if you should show a warning to the user or pause the print. 
-- **WarningSuggested** `boolean` - This is the output of the temporal combination model when it suggests a warning of a possible print failure should be sent to the user. This prediction is based on many signals including the `Score`.
-- **PauseSuggested** `boolean` - This is the output of the temporal combination model when it suggests pausing the print due to the high likelihood of a print failure. This prediction is based on many signals including the `Score`.
-- **NextProcessIntervalSec** `int` - The minimum amount of time that should elapse from this call before the next Process API call. This value is dynamic based on our server load; it averages around 40 seconds.
+The [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/ck1qrradzvhim-process-api) is where the magic happens. Using our ML image models, the Process API will process the new image into the previous context. The temporal combination model will then produce an output based on the past context, current image, and other signals.   
+
+- **Score** `int` - This is the temporal combination model print quality score. The score ranges from 0-100. 0 indicates a perfect print and 100 indicates a strong probability of a failure. You can use this score directly to indicate the current print quality to the user.
+- **WarningSuggested** `boolean` Set to true if the temporal combination model is confident there might be a print issue and the user should be informed. This decision is based on many signals and is only sent when there's high confidence of the warning state.
+- **PauseSuggested** `boolean` - Set to true if the temporal combination model is confident that there is probably a print failure and that the print should be paused. This decision is based on many signals and is only sent when there's high confidence that the print has failed.
+- **NextProcessIntervalSec** `int` - This indicates minimum amount of time that should elapse from this call before the next Process API call. This value is dynamic based on our server load; it averages around 40 seconds. Your integration is free to choose a longer time if desired.
 
 ### 3) Repeat
 
-That's it! Keep calling the Process API with a new snapshot at least or after the minimum next Process time interval. Each time you call the Process API more signals will be gathered by the temporal combination model, which will allow it to gain confidence if the print is a good or bad state.
+That's it! Continuously call the Process API with a new snapshot to keep the AI model updated with the print state. 
+
+You must wait at least the time interval required by `NextProcessIntervalSec`, but you may wait for a longer interval if you wish. Each time you call the Process API more signals will be gathered by the temporal combination model, which will allow it to gain confidence if the print's state.
+
+## High Availability
+
+OctoEverywhere's AI failure detection service achieves high availability and robustness by controlling the rate at which process APIs are called and load balancing between regions.
+
+### ProcessRequestUrl & FallbackProcessRequestUrl
+
+These values are used to load balance AI requests between regions. They are returned by the Create Context API and should be for the lifetime of the context. 
+
+The `ProcessRequestUrl` should be used for all Process API calls unless the call returns a failure. If any failure is returned, be it from networking, server, or otherwise, the `FallbackProcessRequestUrl` can then be used for the remainder of the context lifetime.
+
+The `ProcessRequestUrl` allows the service to drive traffic intelligently when the service is healthy. If something in the service fails, the `FallbackProcessRequestUrl` acts as a global routing URL that ensures the Process API calls will be handled by a different region.
+
+
+### NextProcessIntervalSec
+
+The `NextProcessIntervalSec`
+
 
 ## Errors
 
