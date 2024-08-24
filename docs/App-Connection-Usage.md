@@ -1,4 +1,4 @@
-# App Connection - Usage
+# App Connection - Usage 📱
 
 ### Using an App Connection
 

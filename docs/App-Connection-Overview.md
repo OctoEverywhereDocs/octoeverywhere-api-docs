@@ -1,4 +1,4 @@
-# App Connection - Overview
+# App Connection - Overview 📱
 
 ### What is an App Connection?
 
