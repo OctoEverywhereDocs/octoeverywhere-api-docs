@@ -30,6 +30,8 @@ App Connections currently offer four easy integration points:
 2. [App Connection Portal](App-Portal-Integration.md)
    1. Allows app developers a easy to integrate "OAuth style" App Connection creation process.
    2. Full hosted by OctoEveywhere providing a simple and easy user setup flow.
+3. [Gadget AI Print Failure Detection Status In Your App](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/b538c771f5cef-get-gadget-s-status-for-app-connections)
+   1. AI failure detection in your app! Using the Gadget Status API for App Connections, you can poll print's current Gadget AI Failure Detection status and display it in your app.
 3. [App Connection OctoEverywhere APIs](App-OctoEverywhere-API.md)
    1. A set of APIs from OctoEverywhere's service that return real-time information about the connected printer.
    2. Provides the connection status of the printer to OctoEverywhere as well as the state of the App Connection.
@@ -72,15 +74,13 @@ The supported header based authencation systems are basic http auth or bearer au
 
 The authentication type is specified at the start of an App Connection Portal flow. For details see the [App Portal Integration](App-Portal-Integration.md) page.
 
-### OctoPrint Auto API Key Generation - _NEW!_
-
-**We are excited to announce as of January of 2022 OctoEverywhere can now generate OctoPrint API keys for your app!**
+### Optional - OctoPrint Auto API Key Generation
 
 This amazing feature allows the App Connection Portal to be a true one stop shop for setting up an OctoPrint printer in your app. Since the App Portal already returns the credentails for the OctoEverywhere based connection, the OctoPrint's device local IP, and now the OctoPrint API key for your app, when the App Portal is complete your app has everything it needs to finish the setup!
 
-For more details, [checkout this short page about the feature](App-Connection-zOctoPrint-Auto-API-Key.md).
+For more details, [checkout this doc about the feature](App-Connection-zOctoPrint-Auto-API-Key.md).
 
-### Sounds Great! Let's Integrate!
+## Sounds Great! Let's Integrate!
 
 #### Step 1 - Integrate the App Connection Portal
 
@@ -90,21 +90,29 @@ To create a new App Connection, you must use the App Connection Portal. This eas
 
 [Get started with the App Connection Portal.](App-Portal-Integration.md)
 
-#### Step 2 - Use The App Connection To Talk To OctoPrint
+#### Step 2 - Use The App Connection To Talk To OctoPrint, Moonraker, or Bambu Lab
 
 **Integration Time:** \~1 Hour
 
-Once you have the App Connection created, use it to talk to OctoPrint!
+Once you have the App Connection created, use it to communicate with OctoPrint, Moonraker, or Bambu Lab.
 
 [Get started with usage of the App Connection](App-Connection-Usage.md).
 
 #### Step 3 - (optional) - Integrate with OctoEverywhere APIs
 
-**Integration Time:** \~2 Hours
+**Integration Time:** \~20 Minutes
 
 The OctoEverywhere App APIs give you access to real-time details for a printer once it has been setup via the portal. This information can be used to make sure the App Connection is still valid, check if the printer is connected to OctoEverywhere, get the printer's local IP address, and get user usage limits.
 
 [Get started with the OctoEverywhere App Connection APIs](App-OctoEverywhere-API.md).
+
+#### Step 4 - (optional) - Integrate with Gadget AI Failure Detection
+
+**Integration Time:** \~1 Hour
+
+The OctoEverywhere App APIs give you access to real-time details for a printer once it has been setup via the portal. This information can be used to make sure the App Connection is still valid, check if the printer is connected to OctoEverywhere, get the printer's local IP address, and get user usage limits.
+
+[Get started with the OctoEverywhere App Connection APIs](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/b538c771f5cef-get-gadget-s-status-for-app-connections).
 
 #### Step 4 - (optional) - Integrate with the local plugin APIs
 
