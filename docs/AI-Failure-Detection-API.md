@@ -4,7 +4,7 @@ stoplight-id: 3xadck728cc0t
 
 # AI Failure Detection APIs 🤖
 
-OctoEverywhere empowers 3D printing with free and unlimited 3D printing AI failure detection with a service we lovingly [Gadget](https://octoeverywhere.com/gadget?source=dev_docs_ai). Gadget processes **over 4 million images** a day, consuming **over 430 gigabytes** of data each day.
+OctoEverywhere empowers 3D the printing community with free and unlimited 3D printing AI failure detection with a service we lovingly [Gadget](https://octoeverywhere.com/gadget?source=dev_docs_ai). Gadget processes **over 4 million images** a day, consuming **over 430 gigabytes** of data each day.
 
 Our AI failure detection service uses bleeding-edge ML models to process millions of images daily with incredibly high accuracy. The models are continuously updated with real-time feedback from the community, making them more adaptive, robust, and accurate every day. 
 
