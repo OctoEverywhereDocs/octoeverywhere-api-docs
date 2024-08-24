@@ -108,11 +108,11 @@ The OctoEverywhere App APIs give you access to real-time details for a printer o
 
 #### Step 4 - (optional) - Integrate with Gadget AI Failure Detection
 
-**Integration Time:** \~1 Hour
+**Integration Time:** \~10 Minutes
 
-The OctoEverywhere App APIs give you access to real-time details for a printer once it has been setup via the portal. This information can be used to make sure the App Connection is still valid, check if the printer is connected to OctoEverywhere, get the printer's local IP address, and get user usage limits.
+AI failure detection in your app! Using the Gadget status API for App Connections, you can poll the Gadget's AI prediction state for an active print. We will return you the failure state, a string of text you can show, and more!
 
-[Get started with the OctoEverywhere App Connection APIs](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/b538c771f5cef-get-gadget-s-status-for-app-connections).
+[Add Gadget AI Print Failure Detection To Your App](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/b538c771f5cef-get-gadget-s-status-for-app-connections).
 
 #### Step 4 - (optional) - Integrate with the local plugin APIs
 

@@ -204,7 +204,7 @@ paths:
   /api/gadget/GetStatusFromAppConnection:
     parameters: []
     post:
-      summary: Get Gadget's Status For App Connections
+      summary: Gadget AI Failure Detection Status
       operationId: post-api-gadget-getstatusfromappconnection
       responses:
         '200':
@@ -305,12 +305,18 @@ paths:
 
         Finally, a `Rating` is returned, which can be used by your app to provide custom text, color status indicators, or anything else. This rating will always be between `1-10` (inclusive). The values can be interpreted as follows:
 
+        **Error States**
         - 1 - There's a print failure
         - 2 - There's probably a print failure.
         - 3 - There might be a print failure.
+
+        **Warning States**
         - 4-5 - Monitoring possible print failure.
-        - 6-9 - The print is looking good.
-        - 10 - The print looks perfect.
+
+        **Good States**
+        - 6-7 - The print is looking good.
+        - 8-9 - The print is looking great.
+        - 10  - The print looks perfect.
 
         .
 
