@@ -84,6 +84,7 @@ Client Actionable Errors:
 - `OE_CONTEXT_RATE_LIMITED` - Indicates this context id has made too many requests and has been rate-limited.
 - `OE_IMAGE_DECODE_FAILED` - Only returned from the [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/hb9xvo995a4px-process) indicating the jpeg image failed to decode.
 - `OE_INVALID_API_KEY` - The API key in the `X-API-Key` header was missing or incorrect.
+- `OE_API_KEY_DISABLED` - The API key has been marked disabled by the developer account. The key will never be enabled again, a new key will be created.
 - `OE_API_KEY_BLOCKED_PAYMENT_FAILED` - The API key account owner has an outstanding balance that needs to be paid before the [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/hb9xvo995a4px-process) can be used.
 
 Backend Server Errors:
