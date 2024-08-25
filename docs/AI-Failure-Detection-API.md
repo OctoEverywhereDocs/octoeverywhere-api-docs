@@ -44,7 +44,7 @@ We currently offer an [AI Failure Detection SDK for Python,](https://github.com/
 
 ### 1) Create A Print Context
 
-Every new print must create a new context for the ML models to operate on. To make a new context, make a POST request to the [Create Context API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/kgomtjwkt3dj9-create-context), providing your API key and the optional AI confidence parameters. [Full details.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context)
+Every new print must create a new context for the ML models to operate on. There is no charge to call this API. To make a new context, make a POST request to the [Create Context API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/kgomtjwkt3dj9-create-context), providing your API key and the optional AI confidence parameters. [Full details.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context)
 
 The [Create Context API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/kgomtjwkt3dj9-create-context) will return the Context ID, a primary processing API URL, and a fallback API URL. The primary processing URL is where you should make all future [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/hb9xvo995a4px-process) calls unless they fail. If there's a failure from the primary processing URL, you should switch to the fallback URL and use it for all [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/hb9xvo995a4px-process) calls for the remainder of the context lifetime. [Full details.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/sd17hl8caalt1-create-context)
 
