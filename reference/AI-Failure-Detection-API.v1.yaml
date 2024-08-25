@@ -141,7 +141,7 @@ paths:
                       id: tmnvhgqzy73gi
                     minimum: 20
                     example: 40
-                    description: See details in the API overview text above.
+                    description: '[See details in the API overview text above.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/hb9xvo995a4px-process#api-json-body-return-values)'
                   'PrintQuality ':
                     type: integer
                     x-stoplight:
@@ -149,19 +149,19 @@ paths:
                     minimum: 1
                     maximum: 10
                     example: 2
-                    description: See details in the API overview text above.
+                    description: '[See details in the API overview text above.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/hb9xvo995a4px-process#api-json-body-return-values)'
                   WarningSuggested:
                     type: boolean
                     x-stoplight:
                       id: 3tm8tuefpb7dg
                     default: false
-                    description: See details in the API overview text above.
+                    description: '[See details in the API overview text above.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/hb9xvo995a4px-process#api-json-body-return-values)'
                   PauseSuggested:
                     type: boolean
                     x-stoplight:
                       id: sp2vuq8tyqe3z
                     default: false
-                    description: "See details in the API overview text above.\r\n"
+                    description: '[See details in the API overview text above.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/hb9xvo995a4px-process#api-json-body-return-values)'
                   Score:
                     type: integer
                     x-stoplight:
@@ -169,7 +169,7 @@ paths:
                     example: 5
                     minimum: 0
                     maximum: 100
-                    description: "See details in the API overview text above.\r\n"
+                    description: '[See details in the API overview text above.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/hb9xvo995a4px-process#api-json-body-return-values)'
         '400':
           description: "If the API doesn't return a 200, it will return an HTTP error code with a common json error object body.\r\n\r\n**Note that many different HTTP error codes can be returned; they will all contain the json error body described here.**\r\n\r\nThe json body contains `ErrorType` and `ErrorDetails`. `ErrorType` is a well known string that will map to an [Error Type detailed here.](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/3xadck728cc0t-ai-failure-detection-ap-is#errors) The `ErrorDetails` will provide details about the error."
           content:
