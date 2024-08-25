@@ -105,6 +105,7 @@ The `ProcessRequestUrl` should be used for all [Process API](https://octoeverywh
 
 The `ProcessRequestUrl` allows the service to drive traffic intelligently when the service is healthy. If something in the service fails, the `FallbackProcessRequestUrl` acts as a global routing URL that ensures the [Process API](https://octoeverywhere.stoplight.io/docs/octoeverywhere-api-docs/hb9xvo995a4px-process) calls will be handled by a different region.
 
+Note that the load balancing prioritizes server load over server distance. The Process API already has high latency due to the computation required for the request, so adding extra transit latency is trivial. All of our servers have top-level connectivity, so there's no impact on packet loss for the extra transit distance.
 
 ### NextProcessIntervalSec
 
