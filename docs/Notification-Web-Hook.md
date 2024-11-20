@@ -101,6 +101,8 @@ The following defines the EventType enum. **Remember that over time, more event 
     - Just like FirstLayerComplete, but this fires on the third layer. Some users might find it more useful to check their print after the first few layers are done or both! It's up to you!
 15. **Bed Cooldown Complete**
     - Fired when the print bed has cooled down after a print ends.
+16. **Test Notification**
+    - Fired from the test webhook notification button in the notifications settings page.
 
 
 ### POST Responses And Constraints
